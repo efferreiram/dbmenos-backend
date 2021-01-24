@@ -1,61 +1,31 @@
 const express = require('express');
+const cors = require('cors');
 const api = require('./api_puller')
 const app = express();
+
 const port = 8081;
+const corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200
+};
 
-app.get("/films", (req, res) => {
-  queryString = req.query.textfilter;
-  api.getFromAPI('films', queryString)
-    .then(function (data) {
-      res.send(data);
-    })
-    .catch(function (err) {
-      res.send(err);
-    });
-});
+app.use(cors());
 
-app.get("/people", (req, res) => {
-  queryString = req.query.textfilter;
-  api.getFromAPI('people', queryString)
-    .then(function (data) {
-      res.send(data);
-    })
-    .catch(function (err) {
-      res.send(err);
-    });
-});
-
-app.get("/locations", (req, res) => {
-  queryString = req.query.textfilter;
-  api.getFromAPI('locations', queryString)
-    .then(function (data) {
-      res.send(data);
-    })
-    .catch(function (err) {
-      res.send(err);
-    });
-});
-
-app.get("/species", (req, res) => {
-  queryString = req.query.textfilter;
-  api.getFromAPi('species', queryString)
-    .then(function (data) {
-      res.send(data);
-    })
-    .catch(function (err) {
-      res.send(err);
-    });
-});
-
-app.get("/vehicles", (req, res) => {
-  queryString = req.query.textfilter;
-  api.getFromAPi('vehicles', queryString)
-    .then(function (data) {
-      res.send(data);
-    })
-    .catch(function (err) {
-      res.send(err);
-    });
+app.get("/", (req, res) => {
+  queryString = req.query.textFilter;
+  endpoint = req.query.searchType;
+  console.log(req.query);
+  if (!endpoint) {
+    res.send("No search type selected");
+  } else {
+    api.getFromAPI(endpoint, queryString)
+      .then(function (data) {
+        res.send(data);
+      })
+      .catch(function (err) {
+        res.send(err);
+      });
+  }
 });
 
 app.listen(port, () => {

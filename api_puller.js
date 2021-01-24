@@ -12,7 +12,6 @@ function filterResponse(objects, query)
         break;
       }
     }
-
     if(found) {
       results.push(objects[i])
     }
